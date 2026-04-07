@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/assignments', require('./routes/assignments'));
+app.use('/api/progress', require('./routes/progress'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
