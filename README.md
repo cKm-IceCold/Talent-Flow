@@ -2,16 +2,111 @@
 
 Talent Flow is a modern Learning Management System (LMS) scaffolded for the MERN stack with Docker support. It is designed to help organizations and educators manage courses, users, and learning content using a React frontend, Express.js backend, MongoDB database, and Node.js runtime.
 
-## 🚀 Project Overview
+## **Current Implementation Status: Sprint 1 & 2 Complete** 
 
-Talent Flow is intended to be a scalable LMS platform with features such as:
-- User registration and authentication
-- Role-based access (students, instructors, admins)
-- Course creation and management
-- Enrollment and progress tracking
-- Assignment management and submission
-- Content delivery and learning resources
-- Responsive UI for web access
+### **Engineer C: Assignments & Progress Tracking** 
+**Issue #4: Create Assignments API (Engineer C)** - **COMPLETED** 
+
+#### **Sprint 1: Setup & Core APIs** 
+- **Assignment Model**: Complete MongoDB schema with course linking
+- **Assignment CRUD Endpoints**: Full REST API for assignment management
+- **Course Linking**: Assignments properly linked to courses via ObjectId references
+- **Docker Setup**: Complete containerized development environment
+
+#### **Sprint 2: Progress Tracking**
+- **Progress Model**: Comprehensive student progress tracking system
+- **Status Workflow**: not_started -> in_progress -> submitted -> graded
+- **Progress CRUD**: Full REST API for progress management
+- **Time & Scoring**: Track time spent, completion percentage, scores, dates
+- **Student Views**: Progress by student and by assignment endpoints
+
+### **Implemented API Endpoints**
+
+#### **Assignment Management**
+- `GET /api/assignments` - Get all assignments
+- `GET /api/assignments/course/:courseId` - Get assignments by course
+- `POST /api/assignments` - Create new assignment
+- `PUT /api/assignments/:id` - Update assignment
+- `DELETE /api/assignments/:id` - Delete assignment
+
+#### **Progress Tracking**
+- `GET /api/progress/student/:studentId` - Get all progress for a student
+- `GET /api/progress/assignment/:assignmentId` - Get all progress for an assignment
+- `GET /api/progress/student/:studentId/assignment/:assignmentId` - Get specific progress
+- `POST /api/progress` - Create or update progress record
+- `PUT /api/progress/:id` - Update progress record
+- `DELETE /api/progress/:id` - Delete progress record
+
+#### **Course Management** (Minimal - Required Dependency)
+- `GET /api/courses` - Get all courses
+- `POST /api/courses` - Create new course
+- `GET /api/courses/:id` - Get course by ID
+
+### **Database Models**
+
+#### **Assignment Model**
+```javascript
+{
+  title: String (required),
+  description: String (required),
+  course: ObjectId (ref: 'Course'),
+  dueDate: Date (required),
+  status: ['draft', 'published', 'closed'],
+  maxScore: Number (default: 100),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+#### **Progress Model**
+```javascript
+{
+  student: ObjectId (ref: 'User'),
+  assignment: ObjectId (ref: 'Assignment'),
+  status: ['not_started', 'in_progress', 'submitted', 'graded'],
+  score: Number,
+  maxScore: Number,
+  completionPercentage: Number (0-100),
+  timeSpent: Number (minutes),
+  startedAt: Date,
+  submissionDate: Date,
+  gradedDate: Date,
+  feedback: String,
+  lastAccessedAt: Date
+}
+```
+
+#### **Course Model** (Minimal Implementation)
+```javascript
+{
+  title: String (required),
+  description: String (required),
+  instructor: ObjectId (ref: 'User'),
+  status: ['draft', 'published', 'archived'],
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+## **Testing Results**
+- **Docker Environment**: All services running successfully
+- **API Endpoints**: All CRUD operations tested and working
+- **Database Integration**: MongoDB connection and data persistence confirmed
+- **Workflow Validation**: Course -> Assignment -> Progress flow tested
+- **Container Orchestration**: Docker Compose configuration validated
+
+## **Development Environment**
+- **Backend**: Node.js + Express + MongoDB
+- **Frontend**: React (Basic setup)
+- **Database**: MongoDB with Docker volumes
+- **Containerization**: Docker + Docker Compose
+- **API Testing**: All endpoints functional
+
+## **Next Steps for Team**
+- **Engineer A**: Authentication & User System (Issue #2)
+- **Engineer B**: Courses API Enhancement (Issue #3)
+- **Frontend Development**: React components for assignment and progress interfaces
+- **Integration Testing**: Cross-engineer workflow testing
 
 ## 🧱 Tech Stack
 
