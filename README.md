@@ -43,6 +43,18 @@ Talent Flow aims to provide a scalable digital learning environment with the fol
 - Progress
 - Messages
 
+## 🧪 Current Backend Status
+
+- Engineer B has implemented the Courses and Enrollment modules.
+- Course CRUD APIs are available and wired through `Backend/src/routes/courseRoutes.js`.
+- Enrollment APIs are available through `Backend/src/routes/enrollmentRoutes.js`.
+- Authentication middleware is currently a placeholder; JWT and role enforcement are still pending.
+- `User` and `Module` models are assumed by the current schema but not fully implemented yet.
+
+## 📘 Technical Documentation
+
+Detailed backend API docs are available in `Backend/Technical.md`.
+
 ## 🔗 API Structure (Sample Endpoints)
 
 - `POST /auth/register` - User registration

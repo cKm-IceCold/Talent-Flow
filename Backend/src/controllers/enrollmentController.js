@@ -1,7 +1,11 @@
 const Enrollment = require('../models/Enrollment');
 const Course = require('../models/Course');
 
-// @desc    Get enrollments for a user
+// Controller methods for user enrollment operations.
+// These methods should be protected by auth middleware to verify the
+// requesting user has permissions to take the requested action.
+
+// @desc    Get enrollments for a specific user
 // @route   GET /api/enrollments/:userId
 // @access  Private
 const getUserEnrollments = async (req, res) => {
@@ -13,20 +17,20 @@ const getUserEnrollments = async (req, res) => {
   }
 };
 
-// @desc    Enroll in a course
+// @desc    Enroll a user in a course
 // @route   POST /api/enrollments
 // @access  Private (Intern)
 const enrollInCourse = async (req, res) => {
   const { userId, courseId } = req.body;
 
   try {
-    // Check if course exists
+    // Validate course existence before creating the enrollment.
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    // Check if already enrolled
+    // Prevent duplicate enrollments for the same user and course.
     const existingEnrollment = await Enrollment.findOne({ user: userId, course: courseId });
     if (existingEnrollment) {
       return res.status(400).json({ message: 'Already enrolled in this course' });
@@ -44,7 +48,7 @@ const enrollInCourse = async (req, res) => {
   }
 };
 
-// @desc    Update enrollment status
+// @desc    Update the status of an existing enrollment
 // @route   PUT /api/enrollments/:id
 // @access  Private
 const updateEnrollmentStatus = async (req, res) => {
@@ -53,19 +57,19 @@ const updateEnrollmentStatus = async (req, res) => {
   try {
     const enrollment = await Enrollment.findById(req.params.id);
 
-    if (enrollment) {
-      enrollment.status = status || enrollment.status;
-      const updatedEnrollment = await enrollment.save();
-      res.json(updatedEnrollment);
-    } else {
-      res.status(404).json({ message: 'Enrollment not found' });
+    if (!enrollment) {
+      return res.status(404).json({ message: 'Enrollment not found' });
     }
+
+    enrollment.status = status || enrollment.status;
+    const updatedEnrollment = await enrollment.save();
+    res.json(updatedEnrollment);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// @desc    Get all enrollments (Admin)
+// @desc    Get all enrollments in the system
 // @route   GET /api/enrollments
 // @access  Private (Admin)
 const getAllEnrollments = async (req, res) => {

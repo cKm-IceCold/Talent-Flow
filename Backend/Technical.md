@@ -110,7 +110,36 @@ Protected routes require `Authorization: Bearer <jwt_token>` header (to be imple
 - **Course**: title, description, mentor (User ref), modules (Module ref array), createdAt
 - **Enrollment**: user (User ref), course (Course ref), enrolledAt, status (enrolled/completed/dropped)
 
+## Current Implementation Status
+- Courses module is implemented with full CRUD support.
+- Enrollment module is implemented with create, list, and status update flows.
+- Auth middleware is currently a placeholder and must be replaced by Engineer A with JWT verification and role checks.
+- `User` and `Module` schemas are referenced but should be added to complete the relational data model.
+
+## Testing with Postman
+1. Start the server from `Backend/`: `npm run dev`
+2. Set base URL to `http://localhost:5000/api`
+3. Use `Content-Type: application/json` for POST and PUT requests.
+4. For protected routes, add `Authorization: Bearer <token>` once auth is implemented.
+5. Example POST body for course creation:
+   ```json
+   {
+     "title": "React Fundamentals",
+     "description": "Introductory course for React development.",
+     "mentor": "<mentorUserId>",
+     "modules": []
+   }
+   ```
+6. Example POST body for enrollment:
+   ```json
+   {
+     "userId": "<internUserId>",
+     "courseId": "<courseId>"
+   }
+   ```
+
 ## Notes
 - Auth middleware is placeholder; integrate with Engineer A's implementation.
-- Add Module and Lesson models if needed for full course structure.
+- Add `User` and `Module` models to complete all schema references.
 - Error responses follow standard HTTP codes (400, 404, 500).
+- Use the `/` health check route to confirm server startup: `http://localhost:5000/`.
