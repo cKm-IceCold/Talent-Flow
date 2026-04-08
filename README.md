@@ -1,29 +1,57 @@
-# Talent Flow
+# Talent Flow LMS
 
-Talent Flow is a modern Learning Management System (LMS) scaffolded for the MERN stack. It is designed to help organizations and educators manage courses, users, and learning content using a React frontend, Express.js backend, MongoDB database, and Node.js runtime.
+Talent Flow is a centralized Learning Management System (LMS) designed to support structured learning, collaboration, and performance tracking for interns, mentors, and administrators within TrueMinds Innovation. The platform enables seamless collaboration across 50+ interns, structured course delivery, progress and performance tracking, and project-based learning workflows.
 
 ## 🚀 Project Overview
 
-Talent Flow is intended to be a scalable LMS platform with features such as:
-- User registration and authentication
-- Role-based access (students, instructors, admins)
-- Course creation and management
-- Enrollment and progress tracking
-- Content delivery and learning resources
-- Responsive UI for web access
+Talent Flow aims to provide a scalable digital learning environment with the following core objectives:
+- Centralized digital learning environment
+- Collaboration between interns, mentors, and teams
+- Track learner progress and performance
+- Support real-world project-based learning
+- Ensure scalability and maintainability
+
+## 👥 User Roles
+
+- **Intern**: Enroll in courses, access materials, submit assignments, track progress
+- **Mentor**: Create courses, upload materials, review submissions
+- **Admin**: Manage users, assign roles, monitor platform
 
 ## 🧱 Tech Stack
 
-- Frontend: React
-- Backend: Node.js + Express
-- Database: MongoDB
-- Authentication: JWT or session-based auth
-- Styling: CSS / Tailwind / UI library (optional)
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JWT
+- **File Storage**: Cloudinary or AWS S3
+- **Real-time Features**: Socket.io (optional for collaboration)
 
 ## 📁 Project Structure
 
-- `Backend/` - API server, business logic, database models, authentication, and routes
-- `Frontend/` - React application for the LMS user interface
+- `Backend/` - API server with authentication, user management, course management, enrollment, progress tracking, assignments, collaboration, file management, and analytics
+- `Frontend/` - React application for the LMS user interface (to be developed)
+
+## 🗄️ Database Collections
+
+- Users
+- Roles
+- Courses
+- Modules
+- Lessons
+- Enrollments
+- Assignments
+- Submissions
+- Progress
+- Messages
+
+## 🔗 API Structure (Sample Endpoints)
+
+- `POST /auth/register` - User registration
+- `POST /auth/login` - User login
+- `GET /users` - Retrieve users (admin/mentor)
+- `POST /courses` - Create course (mentor)
+- `GET /courses/:id` - Get course details
+- `POST /enrollments` - Enroll in course
+- `GET /progress/:userId` - Get user progress
 
 ## ⚙️ Setup Instructions
 
@@ -39,55 +67,61 @@ Talent Flow is intended to be a scalable LMS platform with features such as:
    npm install
    ```
 
-3. Install frontend dependencies:
-   ```bash
-   cd ../Frontend
-   npm install
-   ```
-
-4. Create environment files
-   - `Backend/.env`
-   - `Frontend/.env`
-
-   Example backend variables:
+3. Set up environment variables in `Backend/.env`:
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/talentflow
    JWT_SECRET=your_jwt_secret
+   CLOUDINARY_URL=your_cloudinary_url  # or AWS S3 config
    ```
 
-   Example frontend variables:
-   ```env
-   REACT_APP_API_URL=http://localhost:5000/api
-   ```
-
-5. Start the backend server:
+4. Start the backend server:
    ```bash
-   cd Backend
    npm run dev
    ```
 
-6. Start the frontend app:
+5. (Future) Install and start frontend:
    ```bash
    cd ../Frontend
+   npm install
    npm start
    ```
 
-## 🧩 Suggested Features
+## 📋 Sprint Plan
 
-- Authentication and authorization
-- Course and lesson management
-- Student dashboards and progress tracking
-- Instructor course creation tools
-- Admin user management
-- Search and filtering for courses
+- **Engineer A**: Authentication & Users
+- **Engineer B**: Courses & Enrollment
+- **Engineer C**: Assignments & Progress
+
+### Sprint 1: Setup & Core APIs (2 weeks)
+- Project setup, database models, basic API structure
+
+### Sprint 2: RBAC, Enrollment, Progress (2 weeks)
+- Role-based access control, enrollment system, progress tracking
+
+### Sprint 3: File Upload, Collaboration (2 weeks)
+- File management, collaboration features
+
+### Sprint 4: Optimization & Analytics (2 weeks)
+- Performance optimization, analytics dashboard
+
+### Sprint 5: Testing & Documentation (2 weeks)
+- Comprehensive testing, API documentation
+
+## 🎯 MVP Deliverables
+
+- Authentication system
+- Course creation and management
+- Assignment submission and review
+- Progress tracking
 
 ## 💡 Notes
 
-- Adjust the `.env` variables to suit your development environment.
-- Add seed data or starter user accounts to help test the LMS.
-- Expand the frontend with reusable components and protected routes.
+- As Engineer B, focus on Courses & Enrollment modules.
+- Ensure APIs are RESTful and secure with JWT.
+- Integrate file uploads for course materials.
+- Prepare for real-time collaboration if Socket.io is added.
 
 ## 📌 Contribution
 
-Feel free to add new features, improve UX, and build out the full MERN architecture. This README is a starting point for your Talent Flow LMS project.
+This README reflects the PRD for Talent Flow LMS. Collaborate with team members on respective modules and follow the sprint plan for development.

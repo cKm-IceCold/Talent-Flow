@@ -10,6 +10,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const courseRoutes = require('./routes/courseRoutes');
+const enrollmentRoutes = require('./routes/enrollmentRoutes');
+
+app.use('/api/courses', courseRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
+
 // Test route
 app.get('/', (req, res) => {
   res.send('API is running...');
