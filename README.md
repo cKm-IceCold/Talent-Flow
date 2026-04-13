@@ -1,171 +1,71 @@
-# Talent Flow
+# Talent Flow LMS
 
-Talent Flow is a modern Learning Management System (LMS) scaffolded for the MERN stack with Docker support. It is designed to help organizations and educators manage courses, users, and learning content using a React frontend, Express.js backend, MongoDB database, and Node.js runtime.
+Talent Flow is a centralized Learning Management System (LMS) designed to support structured learning, collaboration, and performance tracking for interns, mentors, and administrators within TrueMinds Innovation. The platform enables seamless collaboration across 50+ interns, structured course delivery, progress and performance tracking, and project-based learning workflows.
 
-## **Current Implementation Status: Sprint 1 & 2 Complete** 
+## 🚀 Project Overview
 
-### **Engineer C: Assignments & Progress Tracking** 
-**Issue #4: Create Assignments API (Engineer C)** - **COMPLETED** 
+Talent Flow aims to provide a scalable digital learning environment with the following core objectives:
+- Centralized digital learning environment
+- Collaboration between interns, mentors, and teams
+- Track learner progress and performance
+- Support real-world project-based learning
+- Ensure scalability and maintainability
 
-#### **Sprint 1: Setup & Core APIs** 
-- **Assignment Model**: Complete MongoDB schema with course linking
-- **Assignment CRUD Endpoints**: Full REST API for assignment management
-- **Course Linking**: Assignments properly linked to courses via ObjectId references
-- **Docker Setup**: Complete containerized development environment
+## 👥 User Roles
 
-#### **Sprint 2: Progress Tracking**
-- **Progress Model**: Comprehensive student progress tracking system
-- **Status Workflow**: not_started -> in_progress -> submitted -> graded
-- **Progress CRUD**: Full REST API for progress management
-- **Time & Scoring**: Track time spent, completion percentage, scores, dates
-- **Student Views**: Progress by student and by assignment endpoints
-
-### **Implemented API Endpoints**
-
-#### **Assignment Management**
-- `GET /api/assignments` - Get all assignments
-- `GET /api/assignments/course/:courseId` - Get assignments by course
-- `POST /api/assignments` - Create new assignment
-- `PUT /api/assignments/:id` - Update assignment
-- `DELETE /api/assignments/:id` - Delete assignment
-
-#### **Progress Tracking**
-- `GET /api/progress/student/:studentId` - Get all progress for a student
-- `GET /api/progress/assignment/:assignmentId` - Get all progress for an assignment
-- `GET /api/progress/student/:studentId/assignment/:assignmentId` - Get specific progress
-- `POST /api/progress` - Create or update progress record
-- `PUT /api/progress/:id` - Update progress record
-- `DELETE /api/progress/:id` - Delete progress record
-
-#### **Course Management** (Minimal - Required Dependency)
-- `GET /api/courses` - Get all courses
-- `POST /api/courses` - Create new course
-- `GET /api/courses/:id` - Get course by ID
-
-### **Database Models**
-
-#### **Assignment Model**
-```javascript
-{
-  title: String (required),
-  description: String (required),
-  course: ObjectId (ref: 'Course'),
-  dueDate: Date (required),
-  status: ['draft', 'published', 'closed'],
-  maxScore: Number (default: 100),
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-#### **Progress Model**
-```javascript
-{
-  student: ObjectId (ref: 'User'),
-  assignment: ObjectId (ref: 'Assignment'),
-  status: ['not_started', 'in_progress', 'submitted', 'graded'],
-  score: Number,
-  maxScore: Number,
-  completionPercentage: Number (0-100),
-  timeSpent: Number (minutes),
-  startedAt: Date,
-  submissionDate: Date,
-  gradedDate: Date,
-  feedback: String,
-  lastAccessedAt: Date
-}
-```
-
-#### **Course Model** (Minimal Implementation)
-```javascript
-{
-  title: String (required),
-  description: String (required),
-  instructor: ObjectId (ref: 'User'),
-  status: ['draft', 'published', 'archived'],
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-## **Testing Results**
-- **Docker Environment**: All services running successfully
-- **API Endpoints**: All CRUD operations tested and working
-- **Database Integration**: MongoDB connection and data persistence confirmed
-- **Workflow Validation**: Course -> Assignment -> Progress flow tested
-- **Container Orchestration**: Docker Compose configuration validated
-
-## **Development Environment**
-- **Backend**: Node.js + Express + MongoDB
-- **Frontend**: React (Basic setup)
-- **Database**: MongoDB with Docker volumes
-- **Containerization**: Docker + Docker Compose
-- **API Testing**: All endpoints functional
-
-## **Next Steps for Team**
-- **Engineer A**: Authentication & User System (Issue #2)
-- **Engineer B**: Courses API Enhancement (Issue #3)
-- **Frontend Development**: React components for assignment and progress interfaces
-- **Integration Testing**: Cross-engineer workflow testing
+- **Intern**: Enroll in courses, access materials, submit assignments, track progress
+- **Mentor**: Create courses, upload materials, review submissions
+- **Admin**: Manage users, assign roles, monitor platform
 
 ## 🧱 Tech Stack
 
-- Frontend: React
-- Backend: Node.js + Express
-- Database: MongoDB
-- Containerization: Docker & Docker Compose
-- Authentication: JWT or session-based auth
-- Styling: CSS / Tailwind / UI library (optional)
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JWT
+- **File Storage**: Cloudinary or AWS S3
+- **Real-time Features**: Socket.io (optional for collaboration)
 
 ## 📁 Project Structure
 
-- `Backend/` - API server, business logic, database models, authentication, and routes
-- `Frontend/` - React application for the LMS user interface
-- `docker-compose.yml` - Docker orchestration file
-- `Dockerfile.backend` - Backend container configuration
-- `Dockerfile.frontend` - Frontend container configuration
+- `Backend/` - API server with authentication, user management, course management, enrollment, progress tracking, assignments, collaboration, file management, and analytics
+- `Frontend/` - React application for the LMS user interface (to be developed)
 
-## 🐳 Docker Setup (Recommended)
+## 🗄️ Database Collections
 
-### Prerequisites
-- Docker installed on your system
-- Docker Compose installed
+- Users
+- Roles
+- Courses
+- Modules
+- Lessons
+- Enrollments
+- Assignments
+- Submissions
+- Progress
+- Messages
 
-### Quick Start with Docker
+## 🧪 Current Backend Status
 
-1. Clone the repository:
-   ```bash
-   git clone <repo-url>
-   cd Talent-Flow
-   ```
+- Engineer B has implemented the Courses and Enrollment modules.
+- Course CRUD APIs are available and wired through `Backend/src/routes/courseRoutes.js`.
+- Enrollment APIs are available through `Backend/src/routes/enrollmentRoutes.js`.
+- Authentication middleware is currently a placeholder; JWT and role enforcement are still pending.
+- `User` and `Module` models are assumed by the current schema but not fully implemented yet.
 
-2. Create environment files:
-   ```bash
-   cp Backend/.env.example Backend/.env
-   cp Frontend/.env.example Frontend/.env
-   ```
+## 📘 Technical Documentation
 
-3. Start all services with Docker Compose:
-   ```bash
-   docker-compose up -d
-   ```
+Detailed backend API docs are available in `Backend/Technical.md`.
 
-4. Access the application:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-   - MongoDB: localhost:27017
+## 🔗 API Structure (Sample Endpoints)
 
-5. Stop the services:
-   ```bash
-   docker-compose down
-   ```
+- `POST /auth/register` - User registration
+- `POST /auth/login` - User login
+- `GET /users` - Retrieve users (admin/mentor)
+- `POST /courses` - Create course (mentor)
+- `GET /courses/:id` - Get course details
+- `POST /enrollments` - Enroll in course
+- `GET /progress/:userId` - Get user progress
 
-## ⚙️ Manual Setup (Without Docker)
-
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB installed locally
-- npm or yarn
+## ⚙️ Setup Instructions
 
 1. Clone the repository:
    ```bash
@@ -179,112 +79,61 @@ Talent Flow is a modern Learning Management System (LMS) scaffolded for the MERN
    npm install
    ```
 
-3. Install frontend dependencies:
-   ```bash
-   cd ../Frontend
-   npm install
-   ```
-
-4. Create environment files
-   - `Backend/.env`
-   - `Frontend/.env`
-
-   Example backend variables:
+3. Set up environment variables in `Backend/.env`:
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/talentflow
    JWT_SECRET=your_jwt_secret
-   NODE_ENV=development
+   CLOUDINARY_URL=your_cloudinary_url  # or AWS S3 config
    ```
 
-   Example frontend variables:
-   ```env
-   REACT_APP_API_URL=http://localhost:5000/api
-   REACT_APP_ENV=development
-   ```
-
-5. Start MongoDB (if not running):
+4. Start the backend server:
    ```bash
-   mongod
-   ```
-
-6. Start the backend server:
-   ```bash
-   cd Backend
    npm run dev
    ```
 
-7. Start the frontend app:
+5. (Future) Install and start frontend:
    ```bash
    cd ../Frontend
+   npm install
    npm start
    ```
 
-## 🧩 Core Features
+## 📋 Sprint Plan
 
-- **Authentication and Authorization** - User registration, login, and role-based access
-- **Course Management** - Create, edit, and organize courses with lessons
-- **Assignment System** - Create assignments, link to courses, manage submissions
-- **User Roles** - Students, instructors, and administrators with different permissions
-- **Student Dashboard** - Track progress, view enrolled courses and assignments
-- **Instructor Tools** - Course creation, assignment management, student tracking
-- **Admin Panel** - User management, system configuration
-- **Search and Filtering** - Find courses and content easily
+- **Engineer A**: Authentication & Users
+- **Engineer B**: Courses & Enrollment
+- **Engineer C**: Assignments & Progress
 
-## � Docker Services
+### Sprint 1: Setup & Core APIs (2 weeks)
+- Project setup, database models, basic API structure
 
-The Docker setup includes:
-- **Frontend Container** - React app served with Nginx
-- **Backend Container** - Node.js/Express API server
-- **MongoDB Container** - Database with persistent volumes
-- **Redis Container** - Session storage and caching (optional)
+### Sprint 2: RBAC, Enrollment, Progress (2 weeks)
+- Role-based access control, enrollment system, progress tracking
 
-## 🔧 Development Workflow
+### Sprint 3: File Upload, Collaboration (2 weeks)
+- File management, collaboration features
 
-### Using Docker (Recommended)
-```bash
-# Start development environment
-docker-compose up -d
+### Sprint 4: Optimization & Analytics (2 weeks)
+- Performance optimization, analytics dashboard
 
-# View logs
-docker-compose logs -f
+### Sprint 5: Testing & Documentation (2 weeks)
+- Comprehensive testing, API documentation
 
-# Access containers
-docker-compose exec backend bash
-docker-compose exec frontend bash
+## 🎯 MVP Deliverables
 
-# Rebuild after changes
-docker-compose up --build
-```
+- Authentication system
+- Course creation and management
+- Assignment submission and review
+- Progress tracking
 
-### Environment Configuration
-- `Backend/.env.example` - Backend environment template
-- `Frontend/.env.example` - Frontend environment template
-- `docker-compose.yml` - Service orchestration
+## 💡 Notes
 
-## 💡 Important Notes
+- As Engineer B, focus on Courses & Enrollment modules.
+- Ensure APIs are RESTful and secure with JWT.
+- Integrate file uploads for course materials.
+- Prepare for real-time collaboration if Socket.io is added.
 
-- **Docker is recommended** for consistent development environment
-- Environment files should be created from `.env.example` templates
-- MongoDB data persists in Docker volumes
-- Frontend runs on port 3000, Backend on port 5000
-- Hot reload is enabled for development
+## 📌 Contribution
 
-## 📌 Assignment Implementation Focus
-
-For the assignment model implementation:
-1. Create Assignment schema in Backend/models/
-2. Implement CRUD endpoints in Backend/routes/
-3. Link assignments to courses via ObjectId references
-4. Add validation for assignment data
-5. Test endpoints using Docker environment
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test with Docker setup
-5. Submit a pull request
-
-This README provides a complete guide for setting up and developing the Talent Flow LMS with Docker support.
+This README reflects the PRD for Talent Flow LMS. Collaborate with team members on respective modules and follow the sprint plan for development.
