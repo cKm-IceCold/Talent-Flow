@@ -1,139 +1,94 @@
 # Talent Flow LMS
 
-Talent Flow is a centralized Learning Management System (LMS) designed to support structured learning, collaboration, and performance tracking for interns, mentors, and administrators within TrueMinds Innovation. The platform enables seamless collaboration across 50+ interns, structured course delivery, progress and performance tracking, and project-based learning workflows.
+A centralized Learning Management System (LMS) for interns, mentors, and administrators at TrueMinds Innovation.
 
-## 🚀 Project Overview
-
-Talent Flow aims to provide a scalable digital learning environment with the following core objectives:
-- Centralized digital learning environment
-- Collaboration between interns, mentors, and teams
-- Track learner progress and performance
-- Support real-world project-based learning
-- Ensure scalability and maintainability
-
-## 👥 User Roles
-
-- **Intern**: Enroll in courses, access materials, submit assignments, track progress
-- **Mentor**: Create courses, upload materials, review submissions
-- **Admin**: Manage users, assign roles, monitor platform
-
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
-- **Authentication**: JWT
-- **File Storage**: Cloudinary or AWS S3
-- **Real-time Features**: Socket.io (optional for collaboration)
+- **Authentication**: JWT + bcrypt
+- **Containerization**: Docker, Docker Compose
+- **Frontend**: React (served via Nginx)
 
-## 📁 Project Structure
+## User Roles
 
-- `Backend/` - API server with authentication, user management, course management, enrollment, progress tracking, assignments, collaboration, file management, and analytics
-- `Frontend/` - React application for the LMS user interface (to be developed)
+| Role | Capabilities |
+|------|-------------|
+| Intern | Enroll in courses, submit assignments, track progress |
+| Mentor | Create courses, create/grade assignments |
+| Admin | Full access — manage users, delete resources |
 
-## 🗄️ Database Collections
+## Running the Project
 
-- Users
-- Roles
-- Courses
-- Modules
-- Lessons
-- Enrollments
-- Assignments
-- Submissions
-- Progress
-- Messages
+```bash
+docker compose up --build
+```
 
-## 🧪 Current Backend Status
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:5000 |
+| Swagger Docs | http://localhost:5000/api-docs |
+| MongoDB | mongodb://localhost:27017/talentflow |
 
-- Engineer B has implemented the Courses and Enrollment modules.
-- Course CRUD APIs are available and wired through `Backend/src/routes/courseRoutes.js`.
-- Enrollment APIs are available through `Backend/src/routes/enrollmentRoutes.js`.
-- Authentication middleware is currently a placeholder; JWT and role enforcement are still pending.
-- `User` and `Module` models are assumed by the current schema but not fully implemented yet.
+## Project Structure
 
-## 📘 Technical Documentation
+```
+Talent-Flow/
+├── Backend/
+│   ├── src/
+│   │   ├── controllers/     # auth, user, course, enrollment
+│   │   ├── middleware/      # auth.middleware.js (verifyToken, verifyRole)
+│   │   ├── models/          # User, Role, Course, Module, Enrollment, Assignment, Progress
+│   │   ├── routes/          # auth, users, courses, enrollments, assignments, progress
+│   │   ├── utils/           # swagger
+│   │   └── server.js
+│   └── Technical.md         # Full API documentation
+├── Frontend/                # React app
+├── Dockerfile.backend
+├── Dockerfile.frontend
+├── nginx.conf
+└── docker-compose.yml
+```
 
-Detailed backend API docs are available in `Backend/Technical.md`.
+## API Overview
 
-## 🔗 API Structure (Sample Endpoints)
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| POST | /api/auth/register | Public |
+| POST | /api/auth/login | Public |
+| GET | /api/users/profile | Authenticated |
+| GET | /api/users | Admin |
+| GET | /api/courses | Public |
+| POST | /api/courses | Mentor, Admin |
+| PUT | /api/courses/:id | Mentor, Admin |
+| DELETE | /api/courses/:id | Admin |
+| POST | /api/enrollments | Authenticated |
+| GET | /api/enrollments/:userId | Authenticated |
+| GET | /api/enrollments | Admin |
+| POST | /api/assignments | Mentor, Admin |
+| GET | /api/assignments/course/:courseId | Authenticated |
+| POST | /api/assignments/:id/submit | Intern |
+| POST | /api/assignments/:id/grade | Mentor, Admin |
+| GET | /api/progress/student/:studentId | Authenticated |
 
-- `POST /auth/register` - User registration
-- `POST /auth/login` - User login
-- `GET /users` - Retrieve users (admin/mentor)
-- `POST /courses` - Create course (mentor)
-- `GET /courses/:id` - Get course details
-- `POST /enrollments` - Enroll in course
-- `GET /progress/:userId` - Get user progress
+Full API docs: [`Backend/Technical.md`](Backend/Technical.md)
 
-## ⚙️ Setup Instructions
+## Environment Variables
 
-1. Clone the repository:
-   ```bash
-   git clone <repo-url>
-   cd Talent-Flow
-   ```
+Create `Backend/.env`:
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/talentflow
+JWT_SECRET=your_jwt_secret
+NODE_ENV=development
+```
 
-2. Install backend dependencies:
-   ```bash
-   cd Backend
-   npm install
-   ```
+## MVP Status
 
-3. Set up environment variables in `Backend/.env`:
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/talentflow
-   JWT_SECRET=your_jwt_secret
-   CLOUDINARY_URL=your_cloudinary_url  # or AWS S3 config
-   ```
-
-4. Start the backend server:
-   ```bash
-   npm run dev
-   ```
-
-5. (Future) Install and start frontend:
-   ```bash
-   cd ../Frontend
-   npm install
-   npm start
-   ```
-
-## 📋 Sprint Plan
-
-- **Engineer A**: Authentication & Users
-- **Engineer B**: Courses & Enrollment
-- **Engineer C**: Assignments & Progress
-
-### Sprint 1: Setup & Core APIs (2 weeks)
-- Project setup, database models, basic API structure
-
-### Sprint 2: RBAC, Enrollment, Progress (2 weeks)
-- Role-based access control, enrollment system, progress tracking
-
-### Sprint 3: File Upload, Collaboration (2 weeks)
-- File management, collaboration features
-
-### Sprint 4: Optimization & Analytics (2 weeks)
-- Performance optimization, analytics dashboard
-
-### Sprint 5: Testing & Documentation (2 weeks)
-- Comprehensive testing, API documentation
-
-## 🎯 MVP Deliverables
-
-- Authentication system
-- Course creation and management
-- Assignment submission and review
-- Progress tracking
-
-## 💡 Notes
-
-- As Engineer B, focus on Courses & Enrollment modules.
-- Ensure APIs are RESTful and secure with JWT.
-- Integrate file uploads for course materials.
-- Prepare for real-time collaboration if Socket.io is added.
-
-## 📌 Contribution
-
-This README reflects the PRD for Talent Flow LMS. Collaborate with team members on respective modules and follow the sprint plan for development.
+- [x] Authentication (register, login, JWT, RBAC)
+- [x] Course management (CRUD)
+- [x] Enrollment system
+- [x] Assignment creation, submission & grading
+- [x] Progress tracking
+- [x] Dockerized (backend + frontend + MongoDB)

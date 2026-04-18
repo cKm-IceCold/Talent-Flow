@@ -1,6 +1,20 @@
-version: '3.8'
-
 services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: ../Dockerfile.backend
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/talentflow
+      JWT_SECRET: ${JWT_SECRET:-supersecretkey}
+      NODE_ENV: development
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
   frontend:
     build:
       context: ./Frontend
@@ -9,41 +23,19 @@ services:
       - "3000:80"
     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:5000/api
+    restart: unless-stopped
 
-  backend:
-    build:
-      context: ./Backend
-      dockerfile: ../Dockerfile.backend
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mongodb
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/talentflow
-      - NODE_ENV=development
-      - PORT=5000
-    volumes:
-      - ./Backend:/app
-      - /app/node_modules
-
-  mongodb:
-    image: mongo:6.0
+  mongo:
+    image: mongo:7
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
-    environment:
-      - MONGO_INITDB_DATABASE=talentflow
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
-  mongodb_data:
-  redis_data:
+  mongo_data:
