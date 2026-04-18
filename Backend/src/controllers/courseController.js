@@ -38,13 +38,13 @@ const getCourseById = async (req, res) => {
 // @route   POST /api/courses
 // @access  Private (Mentor/Admin)
 const createCourse = async (req, res) => {
-  const { title, description, mentor, modules } = req.body;
+  const { title, description, modules } = req.body;
 
   try {
     const course = new Course({
       title,
       description,
-      mentor,
+      mentor: req.user._id,
       modules: modules || []
     });
 
@@ -90,7 +90,7 @@ const deleteCourse = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    await course.remove();
+    await Course.findByIdAndDelete(req.params.id);
     res.json({ message: 'Course removed' });
   } catch (error) {
     res.status(500).json({ message: error.message });
