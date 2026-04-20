@@ -1,0 +1,45 @@
+.back-btn {
+  background: none;
+  border: none;
+  color: #0b7a3b;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 14px;
+  padding: 0;
+}
+
+.course-hero { margin-bottom: 20px; }
+.course-hero h2 { font-size: 20px; margin-bottom: 4px; }
+.mentor-name { font-size: 12px; color: #0b7a3b; margin-bottom: 8px; }
+.course-desc { font-size: 13px; color: #555; line-height: 1.5; }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.assignment-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+}
+
+.assignment-info { margin-bottom: 10px; }
+
+.grade-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.grade-section input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 12px;
+}
