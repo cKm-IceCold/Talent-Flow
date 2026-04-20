@@ -21,7 +21,8 @@ const Register = () => {
       await register(form);
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      const msg = err.response?.data?.error || err.response?.data?.message || 'Registration failed';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -53,8 +54,8 @@ const Register = () => {
           <div className="input-group">
             <label>Password</label>
             <div className="password-wrapper">
-              <input type={showPassword ? 'text' : 'password'} placeholder="Create password"
-                value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+              <input type={showPassword ? 'text' : 'password'} placeholder="Create password (min 6 chars)"
+                value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={6} />
               <span onClick={() => setShowPassword(!showPassword)}>{showPassword ? '🙈' : '👁'}</span>
             </div>
           </div>
