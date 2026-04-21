@@ -8,7 +8,7 @@ A centralized Learning Management System (LMS) for interns, mentors, and adminis
 - **Database**: MongoDB
 - **Authentication**: JWT + bcrypt
 - **Containerization**: Docker, Docker Compose
-- **Frontend**: React (served via Nginx)
+- **Frontend**: React (CRA), React Router v6, Axios (served via Nginx)
 
 ## User Roles
 
@@ -37,19 +37,42 @@ docker compose up --build
 Talent-Flow/
 ├── Backend/
 │   ├── src/
-│   │   ├── controllers/     # auth, user, course, enrollment
+│   │   ├── controllers/     # auth, user, course, enrollment, assignment, progress
 │   │   ├── middleware/      # auth.middleware.js (verifyToken, verifyRole)
 │   │   ├── models/          # User, Role, Course, Module, Enrollment, Assignment, Progress
 │   │   ├── routes/          # auth, users, courses, enrollments, assignments, progress
 │   │   ├── utils/           # swagger
 │   │   └── server.js
 │   └── Technical.md         # Full API documentation
-├── Frontend/                # React app
+├── Frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── context/         # AuthContext (JWT state, login/logout)
+│   │   ├── services/        # api.js (axios instance + all API calls)
+│   │   ├── components/      # ProtectedRoute, BottomNav
+│   │   └── pages/           # Login, Register, ResetPassword, Dashboards, Courses, Profile
+│   ├── .env
+│   ├── nginx.conf
+│   └── package.json
 ├── Dockerfile.backend
 ├── Dockerfile.frontend
-├── nginx.conf
 └── docker-compose.yml
 ```
+
+## Frontend Pages
+
+| Page | Route | Access |
+|------|-------|--------|
+| Login | /login | Public |
+| Register | /register | Public |
+| Reset Password | /reset | Public |
+| Intern Dashboard | /dashboard | Intern |
+| Mentor Dashboard | /mentor | Mentor, Admin |
+| Admin Dashboard | /admin | Admin |
+| Course Catalog | /courses | Authenticated |
+| Course Detail | /courses/:id | Authenticated |
+| Profile | /profile | Authenticated |
 
 ## API Overview
 
@@ -84,6 +107,12 @@ JWT_SECRET=your_jwt_secret
 NODE_ENV=development
 ```
 
+Create `Frontend/.env`:
+```env
+REACT_APP_API_URL=/api
+REACT_APP_ENV=development
+```
+
 ## MVP Status
 
 - [x] Authentication (register, login, JWT, RBAC)
@@ -92,3 +121,7 @@ NODE_ENV=development
 - [x] Assignment creation, submission & grading
 - [x] Progress tracking
 - [x] Dockerized (backend + frontend + MongoDB)
+- [x] React frontend with role-based dashboards
+- [x] Protected routes with role-based access control
+- [x] API integration (axios + JWT interceptor)
+- [x] Responsive mobile-first UI

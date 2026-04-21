@@ -1,0 +1,53 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 15px;
+  background: #f5f5f5;
+}
+
+.auth-container .card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.logo h3 { font-size: 18px; font-weight: 700; color: #0b7a3b; }
+
+.logo-dot {
+  width: 12px;
+  height: 12px;
+  background: #0b7a3b;
+  border-radius: 50%;
+}
+
+h2 { font-size: 22px; margin-bottom: 6px; }
+
+.subtitle { font-size: 12px; color: #777; margin-bottom: 18px; }
+
+.password-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.remember { font-size: 11px; display: flex; align-items: center; gap: 5px; }
+.remember input { width: auto; }
+
+.forgot { font-size: 11px; color: #0b7a3b; text-decoration: none; }
+
+.terms { font-size: 10px; color: #777; margin-top: 10px; text-align: center; }
+.terms span { color: #0b7a3b; cursor: pointer; }
+
+.auth-switch { text-align: center; font-size: 12px; margin-top: 15px; }
+.auth-switch a { color: #0b7a3b; font-weight: bold; text-decoration: none; }
+
+.back-link { font-size: 13px; color: #0b7a3b; text-decoration: none; display: inline-block; margin-bottom: 16px; }
