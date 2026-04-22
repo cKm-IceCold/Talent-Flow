@@ -5,7 +5,6 @@ const cors = require('cors');
 
 dotenv.config();
 
-const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors());
@@ -14,10 +13,29 @@ app.use(express.json());
 const setupSwagger = require('./utils/swagger');
 setupSwagger(app);
 
-mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/talentflow')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((error) => console.error('MongoDB connection error:', error));
+// MongoDB connection with caching for serverless
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedDb) {
+    return cachedDb;
+  }
+  const connection = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/talentflow');
+  cachedDb = connection;
+  console.log('Connected to MongoDB');
+  return cachedDb;
+}
+
+// Connect to DB before handling requests
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
 
 app.get('/', (req, res) => {
   res.json({
@@ -48,6 +66,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
