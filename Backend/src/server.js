@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 
+// Load .env from Backend root (parent of src/)
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+// Fallback: also try src/.env for backward compatibility
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
@@ -43,9 +46,13 @@ const connectDB = async () => {
   }
 };
 
-// Swagger setup
-const setupSwagger = require('./utils/swagger');
-setupSwagger(app);
+// Swagger setup (wrapped in try-catch for serverless compatibility)
+try {
+  const setupSwagger = require('./utils/swagger');
+  setupSwagger(app);
+} catch (err) {
+  console.warn('Swagger setup skipped:', err.message);
+}
 
 // Ensure DB connection before handling requests
 app.use(async (req, res, next) => {
@@ -121,3 +128,12 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+// Only listen when run directly (local dev), not when imported by Vercel
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📚 API Docs: http://localhost:${PORT}/api-docs`);
+  });
+}

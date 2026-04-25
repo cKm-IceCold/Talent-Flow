@@ -1,5 +1,6 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const path = require('path');
 
 const options = {
   definition: {
@@ -11,8 +12,10 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
-        description: 'Development server',
+        url: process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : 'http://localhost:5000',
+        description: process.env.VERCEL_URL ? 'Production server' : 'Development server',
       },
     ],
     components: {
@@ -25,7 +28,7 @@ const options = {
       },
     },
   },
-  apis: ['./src/routes/*.js'],
+  apis: [path.resolve(__dirname, '../routes/*.js')],
 };
 
 const specs = swaggerJsdoc(options);
